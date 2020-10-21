@@ -8,8 +8,8 @@ class EndpointCard extends StatelessWidget {
 
   static Map<Endpoint, String> _cardTitles = {
     Endpoint.cases: 'Casos',
-    Endpoint.casesSuspected: 'Casos Sospechosos',
-    Endpoint.casesConfirmed: 'Casos Confirmados',
+    Endpoint.casesSuspected: 'Sospechosos',
+    Endpoint.casesConfirmed: 'Confirmados',
     Endpoint.deaths: 'Muertes',
     Endpoint.recovered: 'Recuperados'
   };
