@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:covid19_app/app/repositories/data_repository.dart';
 import 'package:covid19_app/app/repositories/endpoints_data.dart';
 import 'package:covid19_app/app/services/api.dart';
 import 'package:covid19_app/ui/endpoint_card.dart';
 import 'package:covid19_app/ui/last_update_status_text.dart';
+import 'package:covid19_app/ui/show_alert_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -20,9 +23,24 @@ class _DashboardState extends State<Dashboard> {
   }
 
   Future<void> _updateData() async {
-    final dataRepository = Provider.of<DataRepository>(context, listen: false);
-    final endpointsData = await dataRepository.getAllEndpointsData();
-    setState(() => _endpointsData = endpointsData);
+    try {
+      final dataRepository =
+          Provider.of<DataRepository>(context, listen: false);
+      final endpointsData = await dataRepository.getAllEndpointsData();
+      setState(() => _endpointsData = endpointsData);
+    } on SocketException catch (_) {
+      showAlertDialog(
+          context: context,
+          title: 'Error de Conexión',
+          content: 'No se pudo obtener los datos, inténtelo mas tarde',
+          defaultActionText: 'Ok');
+    } catch (_) {
+      showAlertDialog(
+          context: context,
+          title: 'Error Desconocido',
+          content: 'Inténtelo mas tarde',
+          defaultActionText: 'Ok');
+    }
   }
 
   Widget build(BuildContext context) {
